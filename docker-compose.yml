@@ -1,0 +1,30 @@
+# Deploys a new MongoDB container and serves the app.
+
+version: '3.8'
+
+services:
+  expressapi-mongodb:
+    container_name: expressapi-mongodb
+    image: mongo:latest
+    restart: unless-stopped
+    expose:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+
+  expressapi-app:
+    container_name: expressapi-app
+    image: "node:latest"
+    user: "root"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./:/home/node/app
+    ports:
+      - "3000:3000"
+    command: >
+      bash -c "sleep 10 && npm start"
+    depends_on:
+      - expressapi-mongodb

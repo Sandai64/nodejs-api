@@ -50,4 +50,14 @@ postsRouter.post('/new', async (req, res, next) => {
   }
 });
 
+postsRouter.get('/get', async (req, res, next) => {
+  const posts = await Post.find();
+  res.json({
+    posts: posts
+  });
+});
+
+
+
+
 export default postsRouter;
